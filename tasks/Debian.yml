@@ -1,0 +1,32 @@
+---
+- name: install - Adding Passenger's repo key
+  apt_key:
+    url: "{{ passenger_apt_repo_key_url }}"
+    id: "{{ passenger_apt_repo_key_id }}"
+    state: present
+
+- name: install - Adding support for https
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: installed
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: install - Adding passenger repo
+  apt_repository:
+    repo: "deb {{ passenger_apt_repo }} {{ ansible_lsb.codename }} main"
+    update_cache: yes
+    state: present
+
+- name: install - install passenger packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+    state: "{{ passenger_pkg_state }}"
+  with_items:
+    - "nginx-extras"
+    - "passenger=1:{{ passenger_version }}*"

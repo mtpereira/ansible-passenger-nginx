@@ -1,0 +1,11 @@
+---
+# defaults file for helabs.passenger-nginx
+passenger_apt_repo_key_url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7
+passenger_apt_repo_key_id: AC40B2F7
+passenger_apt_repo: https://oss-binaries.phusionpassenger.com/apt/passenger
+passenger_version: 5.0.21
+passenger_pkg_state: installed
+passenger_system_ruby: yes
+passenger_app_env: production
+passenger_app_min_instances: 1
+passenger_app_name: webapp
