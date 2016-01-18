@@ -10,3 +10,4 @@ passenger_app_env: production
 passenger_app_min_instances: 1
 passenger_app_name: webapp
 passenger_app_port: 3000
+passenger_app_server_name: {{ ansible_fqdn }}
