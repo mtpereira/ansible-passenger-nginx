@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+{% set passenger_app_protocol = 'https' if passenger_app_port == '443' else 'http' %}
+
+server {
+    listen {{ passenger_app_port }};
+    server_name {{ passenger_app_server_name }};
+
+    root {{ passenger_app_root }};
+
+    passenger_enabled on;
+    passenger_user {{ passenger_app_user }};
+    passenger_app_env {{ passenger_app_env }};
+    passenger_friendly_error_pages {{ passenger_friendly_error_pages | default('off' if passenger_app_env == 'production' else 'on') }};
+    passenger_min_instances {{ passenger_app_min_instances }};
+}
+
+passenger_pre_start {{ passenger_app_protocol }}://{{ passenger_app_server_name }}:{{ passenger_app_port }}/;
+

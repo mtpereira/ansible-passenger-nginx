@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+passenger_root {{ passenger_root }};
+passenger_ruby {{ passenger_ruby }};
+passenger_show_version_in_header {{ passenger_show_version_in_header | default('off' if passenger_app_env == 'production' else 'on') }};
+
