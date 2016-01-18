@@ -11,3 +11,7 @@ passenger_app_min_instances: 1
 passenger_app_name: webapp
 passenger_app_port: 3000
 passenger_app_server_name: "{{ ansible_fqdn }}"
+passenger_app_root: "/opt/{{ passenger_app_name }}"
+passenger_app_user: "{{ passenger_app_name }}"
+passenger_friendly_error_pages: "off"
+passenger_app_protocol: "http"
