@@ -1,31 +1,98 @@
-Role Name
+Common Ansible Role
 =========
 
-A brief description of the role goes here.
+![HE:Labs](https://raw.githubusercontent.com/Helabs/helabs.github.com/master/images/logo.png "HE:Labs")
+
+This is a simple role that install core packages for Ansible to work best and
+also installs and configures both NTP and timezone data.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role only requires Ansible version 1.9+
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+All variables should be ovewritten at the playbook level. Those are:
+
+*   `passenger_apt_repo_key_url`: URL to the keyserver from where to fetch
+passenger GPG key
+
+        http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7
+
+*   `passenger_apt_repo_key_id`: Passenger's key ID
+
+        AC40B2F7
+
+*   `passenger_apt_repo`: Passenger apt repository URL
+
+        https://oss-binaries.phusionpassenger.com/apt/passenger
+
+*   `passenger_version`: Passenger's version you want to install
+
+        5.0.21
+
+*   `passenger_pkg_state`: State of the passenger package
+
+        installed
+
+*   `passenger_system_ruby`: Determines if passenger will use the system rub
+binaries or not
+
+        yes
+
+*   `passenger_app_env`: Application environment to pass along to passenger
+
+        production
+
+*   `passenger_app_min_instances`: Minimum number of instances to spaen
+
+        1
+
+*   `passenger_app_name`: The Application common short name
+
+        webapp
+
+*   `passenger_app_port`: tcp prot to which bind Passenger
+
+        3000
+
+*   `passenger_app_server_name`: FQDN used by NGiNX server block
+
+        "{{ ansible_fqdn }}"
+
+*   `passenger_app_root`: Path to app on the filesystem
+
+        "/opt/{{ passenger_app_name }}"
+
+*   `passenger_app_user`: User used by the webapp to run
+
+        "{{ passenger_app_name }}"
+
+*   `passenger_friendly_error_pages`: Whether or not display
+[passenger_friendly_error_pages](https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_friendly_error_pages)
+        "off"
+
+*   `passenger_app_protocol`: Whether you want to use https or not
+
+        "http"
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+*   helabs.common
+*   helabs.ruby
 
-Example Playbook
+Using this role
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Using this roles as as simples as:
 
     - hosts: servers
+      become: yes
       roles:
-         - { role: username.rolename, x: 42 }
+         - helabs.passenger-nginx
 
 License
 -------
@@ -35,4 +102,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Lucas do Amaral Saboya Works as DevOps/SysOps @ [HE:Labs](https://www.helabs.com)
