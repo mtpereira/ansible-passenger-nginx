@@ -58,4 +58,3 @@
     group: root
     state: link
   notify: reload nginx
-  when: passenger_app_enabled is defined and passenger_app_enabled
