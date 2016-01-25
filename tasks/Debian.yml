@@ -9,7 +9,6 @@
   apt:
     pkg: "{{ item }}"
     update_cache: yes
-    cache_valid_time: 3600
     state: installed
   with_items:
     - apt-transport-https
@@ -25,7 +24,6 @@
   apt:
     pkg: "{{ item }}"
     update_cache: yes
-    cache_valid_time: 3600
     state: "{{ passenger_pkg_state }}"
   with_items:
     - "nginx-extras"
