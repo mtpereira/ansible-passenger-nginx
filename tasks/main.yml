@@ -32,12 +32,31 @@
     group: root
   notify: reload nginx
 
-- name: Configuring nginx site
+- name: Configuring nginx
   template:
     src: nginx.conf.j2
     dest: "/etc/nginx/nginx.conf"
     mode: 0644
     owner: root
     group: root
-    force: yes
-  notify: restart nginx
+  notify: reload nginx
+
+
+- name: Configuring nginx vhost
+  template:
+    src: app.conf.j2
+    dest: "/etc/nginx/sites-available/{{ passenger_app_name }}"
+    mode: 0644
+    owner: root
+    group: root
+  notify: reload nginx
+
+- name: app - enable site conf
+  file:
+    src: "/etc/nginx/sites-available/{{ passenger_app_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ passenger_app_name }}"
+    mode: 0644
+    owner: root
+    group: root
+    state: link
+  notify: reload nginx
