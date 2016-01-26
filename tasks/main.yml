@@ -21,7 +21,7 @@
 - name: Gathering facts for passenger config
   set_fact:
     passenger_root: "{{ passenger_config_root.stdout | trim }}"
-    passenger_ruby: "{{ passenger_which_ruby.stdout | trim if passenger_system_ruby else '/usr/bin/passenger_free_ruby' }}"
+    passenger_ruby: "{{ passenger_which_ruby.stdout | trim }}"
 
 - name: Enabling passenger
   template:
@@ -32,29 +32,12 @@
     group: root
   notify: reload nginx
 
-- name: Appending PATH to nginx env
-  lineinfile:
-    dest: /etc/nginx/nginx.conf
-    line: "env PATH;"
-    insertbefore: BOF
-    state: present
-  notify: reload nginx
-
 - name: Configuring nginx site
   template:
-    src: app.conf.j2
-    dest: "/etc/nginx/sites-available/{{ passenger_app_name }}"
+    src: nginx.conf.j2
+    dest: "/etc/nginx/nginx.conf"
     mode: 0644
     owner: root
     group: root
-  notify: reload nginx
-
-- name: app - enable site conf
-  file:
-    src: "/etc/nginx/sites-available/{{ passenger_app_name }}"
-    dest: "/etc/nginx/sites-enabled/{{ passenger_app_name }}"
-    mode: 0644
-    owner: root
-    group: root
-    state: link
-  notify: reload nginx
+    force: yes
+  notify: restart nginx

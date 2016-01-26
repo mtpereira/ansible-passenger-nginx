@@ -1,0 +1,38 @@
+server {
+  env PATH;
+  user {{ passenger_app_user }};
+  worker_processes 4;
+  pid /run/nginx.pid;
+  listen {{ passenger_app_port }};
+  server_name {{ passenger_app_server_name }};
+
+  root {{ passenger_app_root }};
+  events {
+    worker_connections 768;
+  }
+  passenger_enabled on;
+  passenger_user {{ passenger_app_user }};
+  passenger_app_env {{ passenger_app_env }};
+  passenger_friendly_error_pages {{ passenger_friendly_error_pages | default('off' if passenger_app_env == 'production' else 'on') }};
+  passenger_min_instances {{ passenger_app_min_instances }};
+
+{% set passenger_app_protocol = 'https' if passenger_app_port == '443' else 'http' %}{
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    # server_tokens off;
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2; # Dropping SSLv3, ref: POODLE
+    ssl_prefer_server_ciphers on;
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+    gzip on;
+    gzip_disable "msie6";
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+  }
+  passenger_pre_start {{ passenger_app_protocol }}://{{ passenger_app_server_name }}:{{ passenger_app_port }}/;
+}
