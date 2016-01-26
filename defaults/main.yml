@@ -15,3 +15,4 @@ passenger_app_root: "/var/www/{{ passenger_app_name }}/current/public"
 passenger_app_user: rails 
 passenger_friendly_error_pages: "off"
 passenger_app_protocol: "http"
+app_name: "demo_app"
