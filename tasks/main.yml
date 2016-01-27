@@ -13,15 +13,9 @@
   changed_when: no
   register: passenger_config_root
 
-- name: Gathering ruby path
-  command: which ruby
-  changed_when: no
-  register: passenger_which_ruby
-
 - name: Gathering facts for passenger config
   set_fact:
     passenger_root: "{{ passenger_config_root.stdout | trim }}"
-    passenger_ruby: "{{ passenger_which_ruby.stdout | trim }}"
 
 - name: Enabling passenger
   template:
@@ -41,6 +35,11 @@
     group: root
   notify: reload nginx
 
+- name: Remove default nginx vhost
+  file:
+    dest: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: reload nginx
 
 - name: Configuring nginx vhost
   template:

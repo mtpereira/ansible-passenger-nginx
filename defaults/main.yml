@@ -6,6 +6,7 @@ passenger_apt_repo: https://oss-binaries.phusionpassenger.com/apt/passenger
 passenger_version: 5.0.21
 passenger_pkg_state: installed
 passenger_system_ruby: yes
+passenger_ruby: /usr/local/rbenv/shims/ruby
 passenger_app_env: production
 passenger_app_min_instances: 1
 passenger_app_name: webapp
